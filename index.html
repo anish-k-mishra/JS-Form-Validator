@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0b090b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: #1a0338;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(30, 23, 23, 0.1);
+            width: 300px;
+        }
+
+        form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="phone">Mobile Number:</label>
+        <input type="text" id="phone" name="phone"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
+
+        <button type="submit">Submit</button>
+        <p id="errorMessage" class="error"></p>
+    </form>
+
+    <script>
+        function validateForm() {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            let errorMessage = document.getElementById("errorMessage");
+
+            errorMessage.textContent = "";
+
+            if (name.trim() === "") {
+                errorMessage.textContent = "Name is required.";
+                return false;
+            }
+
+            if (email.trim() === "") {
+                errorMessage.textContent = "Email is required.";
+                return false;
+            }
+
+            if (!validateEmail(email)) {
+                errorMessage.textContent = "Invalid email format.";
+                return false;
+            }
+
+            if (phone.trim() === "") {
+                errorMessage.textContent = "Mobile number is required.";
+                return false;
+            }
+
+            if (!validatePhone(phone)) {
+                errorMessage.textContent = "Invalid mobile number format. It should contain only digits.";
+                return false;
+            }
+
+            if (password.trim() === "") {
+                errorMessage.textContent = "Password is required.";
+                return false;
+            }
+
+            if (password.length <= 5) {
+                errorMessage.textContent = "Password should be more than 5 characters long.";
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Passwords do not match.";
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateEmail(email) {
+            const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function validatePhone(phone) {
+            const re = /^\d+$/;
+            return re.test(phone);
+        }
+    </script>
+</body>
+</html>
